@@ -1,0 +1,10 @@
+﻿
+.goods_area{margin:0.32rem 0 0}
+.goods_area li{width:50%;float:left;margin:0 0 0.45rem 0;position: relative;z-index: 999999}
+.goods_area .item{width:6.62rem;margin:0 auto}
+.goods_area .item img{width:100%;border-radius: 0.08rem;height:6.0rem}
+.goods_area .title{width:100%;text-indent: 0.2rem;margin:0.15rem 0 0.15rem 0}
+.goods_area .title a{font-size: 0.45rem;color:#000;height: 0.6rem;overflow: hidden;text-overflow:ellipsis; display: block;white-space: nowrap;}
+.price_real{float:left;font-size: 0.45rem;color:#84AEA3;font-weight: bold;margin:0.05rem 0 0 0.18rem}
+.price_market{color:#ccc;float:left;font-size: 0.5rem;margin:0 0 0 0.75rem}
+

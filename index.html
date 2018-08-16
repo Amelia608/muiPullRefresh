@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+		<style type="text/css">
+			.mui-content>.mui-table-view:first-child {
+				margin-top: -1px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<ul class="mui-table-view"></ul>
+			</div>
+		</div>
+		<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var count = 0;
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					up: {
+						style: 'circle', //必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+						color: '#2BD249', //可选，默认“#2BD009” 下拉刷新控件颜色
+						auto: true, //可选,默认false.首次加载自动上拉刷新一次
+						contentrefresh: '正在加载...',
+						contentnomore: '没有更多数据了~',
+						callback: pullupRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					}
+				}
+			});
+
+			
+			function pullupRefresh() {
+				mui.ajax('get.php', {
+					data: {
+						curentPage: count
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						var page1 = data.totalPage-1;
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > page1)); //参数为true代表没有更多数据了。
+						var table = document.body.querySelector('.mui-table-view'),
+							resData = data.list,
+							len = resData.length;
+						for(var i = 0; i < len; i++) {
+							var li = document.createElement('li');
+							li.className = 'mui-table-view-cell mui-media';
+							li.innerHTML = '<a href="' + resData[i].url + '">' +
+								'<img class="mui-media-object mui-pull-left" src="' + resData[i].logo + '">' +
+								'<div class="mui-media-body">' + resData[i].title + '<p class="mui-ellipsis">' + resData[i].content + '</p></div>' +
+								'</a>';
+							//上拉刷新，新纪录插到最前面；
+							table.append(li);
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+
+			}
+		</script>
+	</body>
+
+</html>
